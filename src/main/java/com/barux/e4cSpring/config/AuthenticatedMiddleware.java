@@ -1,6 +1,5 @@
 package com.barux.e4cSpring.config;
 
-import com.barux.e4cSpring.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +18,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthFilter extends OncePerRequestFilter {
+public class AuthenticatedMiddleware extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;

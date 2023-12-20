@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    public LoginResponse register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) {
+        // check if user with that mail already exists
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("User with that email already exists");
+        }
         var role = request.getRole() != null ? request.getRole() : Role.EXTERNALUSER;
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -28,9 +33,12 @@ public class AuthService {
                 .role(role)
                 .build();
         repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return LoginResponse.builder()
-                .token(jwtToken)
+        return RegisterResponse.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
@@ -43,8 +51,16 @@ public class AuthService {
         );
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
+        var claims = jwtService.generateClaims(user);
+        var jwtToken = jwtService.generateToken(claims, user);
         return LoginResponse.builder()
+                .user(RegisterResponse.builder()
+                        .id(user.getId())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .build())
                 .token(jwtToken)
                 .build();
     }

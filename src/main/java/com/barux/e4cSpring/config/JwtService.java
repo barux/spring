@@ -1,5 +1,6 @@
 package com.barux.e4cSpring.config;
 
+import com.barux.e4cSpring.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -74,5 +75,15 @@ public class JwtService {
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public Map<String, Object> generateClaims(User user) {
+        return Map.of(
+                "id", user.getId(),
+                "firstName", user.getFirstName(),
+                "lastName", user.getLastName(),
+                "email", user.getEmail(),
+                "role", user.getRole()
+        );
     }
 }
