@@ -1,3 +1,15 @@
 spring:
   datasource:
-    url: 
+    url: jdbc:postgresql://localhost:5432/e4c
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
