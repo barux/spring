@@ -22,6 +22,7 @@ public class AuthService {
     public RegisterResponse register(RegisterRequest request) {
         // check if user with that mail already exists
         if (repository.findByEmail(request.getEmail()).isPresent()) {
+            // TODO cambiare RuntimeException con una classe custom o con una response generica che comprenda sia data che errori
             throw new RuntimeException("User with that email already exists");
         }
         var role = request.getRole() != null ? request.getRole() : Role.EXTERNALUSER;
