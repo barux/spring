@@ -30,4 +30,15 @@ public class GlobalExceptionHandler {
                         .build()
         );
     }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions (
+            ValidationException ex
+    ) {
+        return ResponseEntity.badRequest().body(
+                ErrorResponse.builder()
+                        .error(ex.getMessage())
+                        .build()
+        );
+    }
 }

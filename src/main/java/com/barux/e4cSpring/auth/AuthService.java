@@ -1,6 +1,7 @@
 package com.barux.e4cSpring.auth;
 
 import com.barux.e4cSpring.config.JwtService;
+import com.barux.e4cSpring.exception.ValidationException;
 import com.barux.e4cSpring.user.Role;
 import com.barux.e4cSpring.user.User;
 import com.barux.e4cSpring.user.UserRepository;
@@ -21,8 +22,7 @@ public class AuthService {
     public RegisterResponse register(RegisterRequest request) {
         // check if user with that mail already exists
         if (repository.findByEmail(request.getEmail()).isPresent()) {
-            // TODO cambiare RuntimeException con una classe custom o con una response generica che comprenda sia data che errori
-            throw new RuntimeException("User with that email already exists");
+            throw new ValidationException("User with that email already exists");
         }
         var role = request.getRole() != null ? request.getRole() : Role.USER;
         var user = User.builder()
@@ -50,7 +50,7 @@ public class AuthService {
                 )
         );
         var user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ValidationException("User not found"));
         var claims = jwtService.generateClaims(user);
         var jwtToken = jwtService.generateToken(claims, user);
         return LoginResponse.builder()
