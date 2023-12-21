@@ -1,6 +1,6 @@
 package com.barux.e4cSpring.auth;
 
-import com.barux.e4cSpring.user.Role;
+import com.barux.e4cSpring.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private Role role;
+public class LoginResponseDTO {
+    private String token;
+    private UserDTO user;
 }

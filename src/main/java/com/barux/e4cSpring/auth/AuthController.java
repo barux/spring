@@ -1,8 +1,10 @@
 package com.barux.e4cSpring.auth;
 
+import com.barux.e4cSpring.user.UserDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +17,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register (
-        @Valid @RequestBody RegisterRequest request
+    public ResponseEntity<UserDTO> register (
+        @Valid @RequestBody RegisterRequestDTO request
     ) {
-        return ResponseEntity.created(null).body(authService.register(request));
+        return new ResponseEntity<>(authService.register(request), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login (
-        @Valid @RequestBody LoginRequest request
+    public ResponseEntity<LoginResponseDTO> login (
+        @Valid @RequestBody LoginRequestDTO request
     ) {
-        return ResponseEntity.ok(authService.login(request));
+        return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
 }

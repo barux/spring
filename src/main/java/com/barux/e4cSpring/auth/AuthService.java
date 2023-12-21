@@ -1,7 +1,9 @@
 package com.barux.e4cSpring.auth;
 
 import com.barux.e4cSpring.config.JwtService;
+import com.barux.e4cSpring.config.Mapper;
 import com.barux.e4cSpring.exception.ValidationException;
+import com.barux.e4cSpring.user.UserDTO;
 import com.barux.e4cSpring.user.Role;
 import com.barux.e4cSpring.user.User;
 import com.barux.e4cSpring.user.UserRepository;
@@ -19,7 +21,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    public RegisterResponse register(RegisterRequest request) {
+    private final Mapper<User, UserDTO> userMapper;
+    public UserDTO register(RegisterRequestDTO request) {
         // check if user with that mail already exists
         if (repository.findByEmail(request.getEmail()).isPresent()) {
             throw new ValidationException("User with that email already exists");
@@ -32,17 +35,11 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
                 .build();
-        repository.save(user);
-        return RegisterResponse.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .build();
+        var registeredUser = repository.save(user);
+        return userMapper.mapTo(registeredUser);
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public LoginResponseDTO login(LoginRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -53,14 +50,8 @@ public class AuthService {
                 .orElseThrow(() -> new ValidationException("User not found"));
         var claims = jwtService.generateClaims(user);
         var jwtToken = jwtService.generateToken(claims, user);
-        return LoginResponse.builder()
-                .user(RegisterResponse.builder()
-                        .id(user.getId())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .email(user.getEmail())
-                        .role(user.getRole())
-                        .build())
+        return LoginResponseDTO.builder()
+                .user(userMapper.mapTo(user))
                 .token(jwtToken)
                 .build();
     }

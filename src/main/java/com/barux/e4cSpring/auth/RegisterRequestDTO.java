@@ -1,19 +1,17 @@
 package com.barux.e4cSpring.auth;
 
 import com.barux.e4cSpring.user.Role;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class RegisterRequestDTO {
 
     @NotBlank(message = "firstName can't be blank")
     @NotNull(message = "firstName is required")

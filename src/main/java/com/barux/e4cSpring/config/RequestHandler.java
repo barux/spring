@@ -29,7 +29,7 @@ public class RequestHandler {
                         "/v3/api-docs/**",
                         "/swagger-ui/**")
                     .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider);
