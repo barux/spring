@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class AuthService {
             // TODO cambiare RuntimeException con una classe custom o con una response generica che comprenda sia data che errori
             throw new RuntimeException("User with that email already exists");
         }
-        var role = request.getRole() != null ? request.getRole() : Role.EXTERNALUSER;
+        var role = request.getRole() != null ? request.getRole() : Role.USER;
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
