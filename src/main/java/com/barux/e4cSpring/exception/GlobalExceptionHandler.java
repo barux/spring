@@ -1,5 +1,6 @@
 package com.barux.e4cSpring.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,6 +43,18 @@ public class GlobalExceptionHandler {
                         .error(ex.getMessage())
                         .build(),
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorResponse> handleExpiredJwtExceptions (
+            ExpiredJwtException ex
+    ) {
+        return new ResponseEntity<>(
+                ErrorResponse.builder()
+                        .error(ex.getMessage())
+                        .build(),
+                HttpStatus.UNAUTHORIZED
         );
     }
 }

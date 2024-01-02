@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class RequestHandler {
 
     private final AuthenticationProvider authenticationProvider;
+    private final AuthenticatedMiddleware authenticatedMiddleware;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,10 +31,11 @@ public class RequestHandler {
                         "/v3/api-docs/**",
                         "/swagger-ui/**")
                     .permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider);
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(authenticatedMiddleware, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

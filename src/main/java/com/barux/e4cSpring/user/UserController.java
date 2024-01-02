@@ -20,7 +20,7 @@ public class UserController {
         return new ResponseEntity<>(userService.me(), HttpStatus.OK);
     }
 
-    @GetMapping("/") // TODO questa chiamata dovrebbe essere disponibile solo agli admin
+    @GetMapping("/")
     public ResponseEntity<UserDTO[]> getAll() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
