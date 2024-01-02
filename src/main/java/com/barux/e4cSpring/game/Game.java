@@ -1,9 +1,7 @@
 package com.barux.e4cSpring.game;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.barux.e4cSpring.publisher.Publisher;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +23,14 @@ public class Game {
     private String description;
     private Date releaseDate;
     private Float price;
+
+    @Enumerated(EnumType.STRING)
     private Genre genre;
+
+    @Enumerated(EnumType.STRING)
     private Platform platform;
+
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
 }
