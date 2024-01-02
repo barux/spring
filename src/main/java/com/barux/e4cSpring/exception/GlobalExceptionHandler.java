@@ -3,6 +3,7 @@ package com.barux.e4cSpring.exception;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,6 +56,18 @@ public class GlobalExceptionHandler {
                         .error(ex.getMessage())
                         .build(),
                 HttpStatus.UNAUTHORIZED
+        );
+    }
+
+@ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedExceptions (
+            AccessDeniedException ex
+    ) {
+        return new ResponseEntity<>(
+                ErrorResponse.builder()
+                        .error(ex.getMessage())
+                        .build(),
+                HttpStatus.FORBIDDEN
         );
     }
 }
