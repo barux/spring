@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GameDTO {
-    private Long id;
+    private Integer id;
     private String name;
     private String description;
     private Date releaseDate;
@@ -20,3 +20,5 @@ public class GameDTO {
     private Genre genre;
     private Platform platform;
 }
+
+// TODO aggiungere controlli di validazione

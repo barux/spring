@@ -21,32 +21,31 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameDTO> getById(Integer id) {
+    public ResponseEntity<GameDTO> getById(@PathVariable Integer id) {
         return new ResponseEntity<>(gameService.getById(id), HttpStatus.OK);
     }
 
-//    @GetMapping{"/?publisherId={publisherId}"}
-//    public ResponseEntity<Page<GameDTO>> getByPublisherId(Integer publisherId) {
-//        return new ResponseEntity<>(gameService.getByPublisherId(publisherId), HttpStatus.OK);
-//    }
-
     @PostMapping("/")
-    public ResponseEntity<GameDTO> create(GameDTO gameDTO) {
-        return new ResponseEntity<>(gameService.create(gameDTO), HttpStatus.CREATED);
+    public ResponseEntity<GameDTO> create(@RequestBody GameDTO gameDTO) {
+        return new ResponseEntity<>(gameService.save(gameDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GameDTO> update(Integer id, GameDTO gameDTO) {
+    public ResponseEntity<GameDTO> update(@PathVariable Integer id, @RequestBody GameDTO gameDTO) {
+        if(!gameService.existsById(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(gameService.update(id, gameDTO), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<GameDTO> updateFields(Integer id, GameDTO gameDTO) {
+    public ResponseEntity<GameDTO> updateFields(@PathVariable Integer id, @RequestBody GameDTO gameDTO) {
+        if(!gameService.existsById(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(gameService.updateFields(id, gameDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         gameService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

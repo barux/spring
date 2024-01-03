@@ -21,27 +21,31 @@ public class PublisherController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PublisherDTO> getById(Integer id) {
+    public ResponseEntity<PublisherDTO> getById(@PathVariable Integer id) {
         return new ResponseEntity<>(publisherService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<PublisherDTO> create(PublisherDTO publisherDTO) {
+    public ResponseEntity<PublisherDTO> create(@RequestBody PublisherDTO publisherDTO) {
         return new ResponseEntity<>(publisherService.create(publisherDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PublisherDTO> update(Integer id, PublisherDTO publisherDTO) {
+    public ResponseEntity<PublisherDTO> update(@PathVariable Integer id, @RequestBody PublisherDTO publisherDTO) {
+        if (!publisherService.existsById(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(publisherService.update(id, publisherDTO), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PublisherDTO> updateFields(Integer id, PublisherDTO publisherDTO) {
+    public ResponseEntity<PublisherDTO> updateFields(@PathVariable Integer id, @RequestBody PublisherDTO publisherDTO) {
+        if (!publisherService.existsById(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(publisherService.updateFields(id, publisherDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         publisherService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

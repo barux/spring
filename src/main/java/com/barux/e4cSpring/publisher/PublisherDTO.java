@@ -12,7 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PublisherDTO {
-    private Long id;
+    private Integer id;
     private String name;
     private Date foundedAt;
 }
+
+// TODO aggiungere controlli di validazione
