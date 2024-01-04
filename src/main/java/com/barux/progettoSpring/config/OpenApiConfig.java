@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "production server",
-                        url = "https://e4c-spring.production.com"
+                        url = "https://spring.production.com"
                 )
         }
 )
