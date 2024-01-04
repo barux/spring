@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.barux</groupId>
-	<artifactId>e4cSpring</artifactId>
+	<artifactId>progettoSpring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>e4cSpring</name>
 	<description>Reimplementation of E4C BE to learn Spring</description>
