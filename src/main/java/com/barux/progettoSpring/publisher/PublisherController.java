@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,8 @@ public class PublisherController {
     private final PublisherService publisherService;
 
     @GetMapping("/")
-    public ResponseEntity<Page<PublisherDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<PublisherDTO>> getAll(@PageableDefault(size = Integer.MAX_VALUE, sort = { "id"}, direction = Sort.Direction.ASC)
+                                                         Pageable pageable) {
         return new ResponseEntity<>(publisherService.getAll(pageable), HttpStatus.OK);
     }
 
