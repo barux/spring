@@ -1,6 +1,8 @@
 package com.barux.progettoSpring.publisher;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,19 +28,19 @@ public class PublisherController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<PublisherDTO> create(@RequestBody PublisherDTO publisherDTO) {
+    public ResponseEntity<PublisherDTO> create(@Valid @RequestBody PublisherDTO publisherDTO) {
         return new ResponseEntity<>(publisherService.create(publisherDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PublisherDTO> update(@PathVariable Integer id, @RequestBody PublisherDTO publisherDTO) {
+    public ResponseEntity<PublisherDTO> update(@PathVariable Integer id, @Valid @RequestBody PublisherDTO publisherDTO) {
         if (!publisherService.existsById(id))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(publisherService.update(id, publisherDTO), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PublisherDTO> updateFields(@PathVariable Integer id, @RequestBody PublisherDTO publisherDTO) {
+    public ResponseEntity<PublisherDTO> updateFields(@PathVariable Integer id, @Valid @RequestBody PublisherDTO publisherDTO) {
         if (!publisherService.existsById(id))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(publisherService.updateFields(id, publisherDTO), HttpStatus.OK);
