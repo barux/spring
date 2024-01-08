@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationExceptions (
             MethodArgumentNotValidException ex
     ) {
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 ErrorResponse.builder()
                         .error(ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage())
@@ -27,6 +28,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRuntimeExceptions (
             RuntimeException ex
     ) {
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 ErrorResponse.builder()
                         .error(ex.getMessage())
@@ -39,6 +41,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationExceptions (
             ValidationException ex
     ) {
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 ErrorResponse.builder()
                         .error(ex.getMessage())
@@ -51,6 +54,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleExpiredJwtExceptions (
             ExpiredJwtException ex
     ) {
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 ErrorResponse.builder()
                         .error(ex.getMessage())
@@ -63,6 +67,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAccessDeniedExceptions (
             AccessDeniedException ex
     ) {
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 ErrorResponse.builder()
                         .error(ex.getMessage())
