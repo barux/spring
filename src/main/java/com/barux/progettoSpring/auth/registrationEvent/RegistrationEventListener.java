@@ -9,11 +9,13 @@ import com.barux.progettoSpring.user.UserDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 @Component
@@ -23,6 +25,9 @@ public class RegistrationEventListener implements ApplicationListener<Registrati
     private final Mapper<User, UserDTO> mapper;
     private final JavaMailSender mailSender;
 
+    @Value("${email}")
+    private String email;
+
     @Override
     public void onApplicationEvent(RegistrationEvent event) {
         UserDTO user = event.getUser();
@@ -31,18 +36,18 @@ public class RegistrationEventListener implements ApplicationListener<Registrati
         String url = event.getAppUrl() + "/auth/registrationConfirm?token=" + verificationToken;
         try {
             sendVerificationEmail(url, user.getEmail());
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void sendVerificationEmail(String url, String userMail) throws MessagingException {
+    public void sendVerificationEmail(String url, String userMail) throws MessagingException, UnsupportedEncodingException {
         String subject = "Registration Confirmation";
         String senderName = "Progetto Spring";
         String mailContent = "Please click the link below to activate your account: \n" + url;
         MimeMessage message = mailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom(senderName);
+        messageHelper.setFrom(email, senderName);
         messageHelper.setTo(userMail);
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent);

@@ -34,6 +34,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
+                .isEnabled(false)
                 .build();
         var registeredUser = repository.save(user);
         return userMapper.mapTo(registeredUser);
