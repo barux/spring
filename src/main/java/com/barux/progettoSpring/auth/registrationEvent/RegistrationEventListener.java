@@ -25,7 +25,7 @@ public class RegistrationEventListener implements ApplicationListener<Registrati
     private final Mapper<User, UserDTO> mapper;
     private final JavaMailSender mailSender;
 
-    @Value("${emailOutlook}")
+    @Value("${emailGoogle}")
     private String email;
 
     @Override
