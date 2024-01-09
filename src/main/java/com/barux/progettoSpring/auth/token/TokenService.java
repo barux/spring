@@ -1,5 +1,6 @@
 package com.barux.progettoSpring.auth.token;
 
+import com.barux.progettoSpring.common.GenericResponse;
 import com.barux.progettoSpring.user.User;
 import com.barux.progettoSpring.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +18,18 @@ public class TokenService {
         tokenRepository.save(token);
     }
 
-    public ResponseEntity<String> confirmRegistration(String token) {
+    public ResponseEntity<GenericResponse> confirmRegistration(String token) {
         VerificationToken verificationToken = tokenRepository.findByToken(token);
         if (verificationToken.getUser().isEnabled()) {
-            return new ResponseEntity<>("User already enabled", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new GenericResponse("User already enabled"), HttpStatus.BAD_REQUEST);
         }
         if (verificationToken.getExpiryDate().getTime() - System.currentTimeMillis() <= 0) {
-            return new ResponseEntity<>("Token expired", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new GenericResponse("Token expired"), HttpStatus.BAD_REQUEST);
         }
         User user = verificationToken.getUser();
         user.setIsEnabled(true);
         userRepository.save(user);
         tokenRepository.delete(verificationToken);
-        return new ResponseEntity<>("User enabled", HttpStatus.OK);
+        return new ResponseEntity<>(new GenericResponse("User enabled"), HttpStatus.OK);
     }
 }
