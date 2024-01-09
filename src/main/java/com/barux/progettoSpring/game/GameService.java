@@ -46,6 +46,7 @@ public class GameService {
                     Optional.ofNullable(gameDTO.getDescription()).ifPresent(existingBook::setDescription);
                     Optional.ofNullable(gameDTO.getReleaseDate()).ifPresent(existingBook::setReleaseDate);
                     Optional.ofNullable(gameDTO.getPrice()).ifPresent(existingBook::setPrice);
+                    Optional.ofNullable(gameDTO.getCover()).ifPresent(existingBook::setCover);
                     Optional.ofNullable(gameDTO.getGenre()).ifPresent(existingBook::setGenre);
                     Optional.ofNullable(gameDTO.getPlatform()).ifPresent(existingBook::setPlatform);
                     return gameMapper.mapTo(gameRepository.save(existingBook));

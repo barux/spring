@@ -33,6 +33,10 @@ public class GameDTO {
     @PositiveOrZero(message = "price must be positive or zero")
     private Float price;
 
+    @NotBlank(message = "cover can't be blank")
+    @NotNull(message = "cover is required")
+    private String cover;
+
     @NotNull(message = "genre is required")
     private Genre genre;
 

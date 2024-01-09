@@ -23,6 +23,7 @@ public class Game {
     private String description;
     private Date releaseDate;
     private Float price;
+    private String cover;
 
     @Enumerated(EnumType.STRING)
     private Genre genre;
